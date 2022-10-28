@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'dart:math' as math show Random;
 
 void main() {
   runApp(
@@ -14,72 +13,129 @@ void main() {
   );
 }
 
-const name = ['Foo', 'Bar', 'Baz'];
+/// ### abstract class cannot be initialized
+/// That action or event as whole that can be sent to the bloc
+///
 
-/// ### create an extension RandomElement<T> on Iterable<T> for pick random name
-
-extension RandomElement<T> on Iterable<T> {
-  T getRandomElement() => elementAt(math.Random().nextInt(length));
+@immutable
+abstract class LoadAction {
+  const LoadAction();
 }
 
-class NameCubit extends Cubit<String?> {
-  NameCubit() : super(null);
-
-  /// ### Allow Picking random name in the cubit
-  ///
-  /// Every cubit and Bloc has a Special object call state
-  ///  emit is the way for producing value of state
-  void pickRandomName() => emit(name.getRandomElement());
+enum PersonUrl {
+  person1,
+  person2,
 }
 
-class HomePage extends StatefulWidget {
+extension UrlString on PersonUrl {
+  String get urlString {
+    switch (this) {
+      case PersonUrl.person1:
+        // TODO: Handle this case.
+        break;
+      case PersonUrl.person2:
+        // TODO: Handle this case.
+        break;
+    }
+  }
+}
+
+class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
   @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  late final NameCubit cubit;
-  @override
-  void initState() {
-    cubit = NameCubit();
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    cubit.close();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    late final Bloc myBloc;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Home Page'),
       ),
-      body: StreamBuilder<String?>(
-        stream: cubit.stream,
-        builder: (context, snapShot) {
-          final button = TextButton(
-            onPressed: () => cubit.pickRandomName(),
-            child: const Text('Pick a random name'),
-          );
-          switch (snapShot.connectionState) {
-            case ConnectionState.none:
-              return button;
-            case ConnectionState.waiting:
-              return button;
-            case ConnectionState.active:
-              return Column(
-                children: [Text(snapShot.data ?? ''), button],
-              );
-            case ConnectionState.done:
-              return const SizedBox();
-          }
-        },
-      ),
     );
   }
 }
+
+// import 'package:bloc/bloc.dart';
+// import 'package:flutter/material.dart';
+// import 'dart:math' as math show Random;
+
+// void main() {
+//   runApp(
+//     MaterialApp(
+//       title: 'flutter Demo',
+//       theme: ThemeData(
+//         primarySwatch: Colors.blue,
+//       ),
+//       home: const HomePage(),
+//     ),
+//   );
+// }
+
+// const name = ['Foo', 'Bar', 'Baz'];
+
+// /// ### create an extension RandomElement<T> on Iterable<T> for pick random name
+
+// extension RandomElement<T> on Iterable<T> {
+//   T getRandomElement() => elementAt(math.Random().nextInt(length));
+// }
+
+// class NameCubit extends Cubit<String?> {
+//   NameCubit() : super(null);
+
+//   /// ### Allow Picking random name in the cubit
+//   ///
+//   /// Every cubit and Bloc has a Special object call state
+//   ///  emit is the way for producing value of state
+//   void pickRandomName() => emit(name.getRandomElement());
+// }
+
+// class HomePage extends StatefulWidget {
+//   const HomePage({Key? key}) : super(key: key);
+
+//   @override
+//   State<HomePage> createState() => _HomePageState();
+// }
+
+// class _HomePageState extends State<HomePage> {
+//   late final NameCubit cubit;
+//   @override
+//   void initState() {
+//     cubit = NameCubit();
+//     super.initState();
+//   }
+
+//   @override
+//   void dispose() {
+//     cubit.close();
+//     super.dispose();
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: const Text('Home Page'),
+//       ),
+//       body: StreamBuilder<String?>(
+//         stream: cubit.stream,
+//         builder: (context, snapShot) {
+//           final button = TextButton(
+//             onPressed: () => cubit.pickRandomName(),
+//             child: const Text('Pick a random name'),
+//           );
+//           switch (snapShot.connectionState) {
+//             case ConnectionState.none:
+//               return button;
+//             case ConnectionState.waiting:
+//               return button;
+//             case ConnectionState.active:
+//               return Column(
+//                 children: [Text(snapShot.data ?? ''), button],
+//               );
+//             case ConnectionState.done:
+//               return const SizedBox();
+//           }
+//         },
+//       ),
+//     );
+//   }
+// }
