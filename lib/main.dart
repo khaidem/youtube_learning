@@ -22,9 +22,22 @@ abstract class LoadAction {
   const LoadAction();
 }
 
+@immutable
+class LoadPersonAction implements LoadAction {
+  final PersonUrl url;
+  const LoadPersonAction({required this.url}) : super();
+}
+
 enum PersonUrl {
   person1,
   person2,
+}
+
+@immutable
+class Person {
+  final String name;
+  final int age;
+  const Person({required this.age, required this.name});
 }
 
 extension UrlString on PersonUrl {
