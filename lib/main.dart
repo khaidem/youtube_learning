@@ -22,6 +22,9 @@ abstract class LoadAction {
   const LoadAction();
 }
 
+
+
+
 @immutable
 class LoadPersonAction implements LoadAction {
   final PersonUrl url;
@@ -44,11 +47,9 @@ extension UrlString on PersonUrl {
   String get urlString {
     switch (this) {
       case PersonUrl.person1:
-        // TODO: Handle this case.
-        break;
+      return '';
       case PersonUrl.person2:
-        // TODO: Handle this case.
-        break;
+      return '';
     }
   }
 }
