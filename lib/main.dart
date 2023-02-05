@@ -1,16 +1,38 @@
-import 'package:bloc/bloc.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:youtube_learning/logic/cubit/counter_cubit.dart';
+import 'package:youtube_learning/logic/cubit/internet_connect_cubit.dart';
+import 'package:youtube_learning/screen/home.dart';
 
 void main() {
-  runApp(
-    MaterialApp(
-      title: 'flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+            create: (context) => InternetConnectCubit(
+                  Connectivity(),
+                )),
+        BlocProvider(
+          create: (context) => CounterCubit(),
+        )
+      ],
+      child: MaterialApp(
+        title: 'flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: const FirstPage(),
       ),
-      home: const HomePage(),
-    ),
-  );
+    );
+  }
 }
 
 /// ### abstract class cannot be initialized
@@ -21,9 +43,6 @@ void main() {
 abstract class LoadAction {
   const LoadAction();
 }
-
-
-
 
 @immutable
 class LoadPersonAction implements LoadAction {
@@ -47,9 +66,9 @@ extension UrlString on PersonUrl {
   String get urlString {
     switch (this) {
       case PersonUrl.person1:
-      return '';
+        return '';
       case PersonUrl.person2:
-      return '';
+        return '';
     }
   }
 }
